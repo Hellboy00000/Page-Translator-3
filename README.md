@@ -22,7 +22,7 @@ To change the translation service, select the service you'd like to use in the "
 
 ## History and development
 
-Page Translator 1 - Original Page Translator © 2017–2018 by Jeremiah Lee. - https://github.com/KingLui69/page-translator
+Page Translator 1 - Page Translator © 2017–2018 by Jeremiah Lee. - https://github.com/KingLui69/page-translator
 
 Page Translator 2 - Page Translator Revised 2019 by Mathnerd314. - https://github.com/Mathnerd314/page-translator
 
