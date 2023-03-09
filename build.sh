@@ -12,5 +12,6 @@ zip "./page-translator.xpi" \
 ./icons/LICENSE.txt \
 ./LICENSE.txt \
 ./manifest.json \
+./options/options.css \
 ./options/options.html \
 ./options/options.js
