@@ -1,17 +1,19 @@
 <!DOCTYPE html>
-<html>
+<html lang="en-US">
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
+	<title>Page_Translator</title>
+	<meta name="viewport" content="width=device-width">
 </head>
 <body>
     <form>
         <div>
-            <label for="translation-service">Translate using </label>
+            <label style="padding-right: 2px;" for="translation-service">Translate using </label>
             <select id="translation-service">
                 <option value="google">Google Translate</option>
                 <option value="microsoft">Microsoft Translator</option>
             </select>
-            <label for="google_lang_from"> from </label>
+            <label style="padding: 0px 2px;" for="google_lang_from"> from </label>
 				<select id="google_lang_from">
 					<option value="auto">*Auto-Detect (Google)*</option>
 					<option value="auto2">*Auto-Detect (Firefox)*</option>
@@ -120,7 +122,7 @@
 					<option value="zu">Zulu</option>
 				</select>
 				<select id="microsoft_lang_from">
-					<option value="">*Auto-Detect (Microsoft)*</option>
+					<option value="auto">*Auto-Detect (Microsoft)*</option>
 					<option value="auto2">*Auto-Detect (Firefox)*</option>
 					<option value="af">Afrikaans</option>
 					<option value="ar">Arabic</option>
@@ -187,7 +189,7 @@
 					<option value="cy">Welsh</option>
 					<option value="yua">Yucatec Maya</option>
 				</select>
-			<label for="google_lang_to"> to </label>
+			<label style="padding: 0px 2px;" for="google_lang_to"> to </label>
 				<select id="google_lang_to">
 					<option value="auto">*Auto-Detect*</option>
 					<option value="af">Afrikaans</option>
@@ -295,7 +297,7 @@
 					<option value="zu">Zulu</option>
 				</select>
 				<select id="microsoft_lang_to">
-					<option value="">*Auto-Detect*</option>
+					<option value="auto">*Auto-Detect*</option>
 					<option value="af">Afrikaans</option>
 					<option value="ar">Arabic</option>
 					<option value="bn-BD">Bangla</option>
@@ -361,23 +363,22 @@
 					<option value="cy">Welsh</option>
 					<option value="yua">Yucatec Maya</option>
 				</select>
-			</label>
 		</div>
-        <div>
+        <div style="padding-top: 10px;">
             <label>
-                <input id="automatically-translate" type="checkbox" value="true" />
+                <input id="automatically-translate" type="checkbox" />
                 Automatically translate pages in foreign language
             </label>
         </div>
         <div>
             <label>
-                <input id="always-show-page-action" type="checkbox" value="true" />
+                <input id="always-show-page-action" type="checkbox" />
                 Always show translation action
             </label>
         </div>
         <div>
             <label>
-                <input id="context-menu" type="checkbox" value="false" />
+                <input id="context-menu" type="checkbox" checked />
                 Show translation action in context menu
             </label>
         </div>

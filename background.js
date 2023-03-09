@@ -4,15 +4,15 @@ function protocolIsApplicable(tabUrl) {
     return APPLICABLE_PROTOCOLS.includes(url.protocol);
 }
 
-let options = {alwaysShowPageAction: false, automaticallyTranslate: false, translationService: "google", fromLang: "auto", toLang: "auto", contextMenu: false};
+let options = { alwaysShowPageAction: false, automaticallyTranslate: false, translationService: "google", fromLang: "auto", toLang: "auto", contextMenu: true };
 
 let contextMenuItem = false;
 
 async function getPageLanguage(tabId) {
-    if(!browser.tabs.detectLanguage) {
-        if(!options.alwaysShowPageAction) {
+    if (!browser.tabs.detectLanguage) {
+        if (!options.alwaysShowPageAction) {
             options.alwaysShowPageAction = true;
-            browser.storage.local.set({alwaysShowPageAction: true});
+            browser.storage.local.set({ alwaysShowPageAction: true });
         }
         return "und";
     }
@@ -84,7 +84,7 @@ async function determinePageAction(tabId, url) {
         return true;
     }
 
-    if(!url) {
+    if (!url) {
         let tab = await browser.tabs.get(tabId);
         url = tab.url;
     }
@@ -107,44 +107,82 @@ async function determinePageAction(tabId, url) {
 
 async function initializePageAction(tabId, url) {
     let action = await determinePageAction(tabId, url);
-    
+
     if (action === "translate") {
         translatedURLs.add(url);
-        doTranslator({id: tabId, url: url});
+        doTranslator({ id: tabId, url: url });
         action = false;
     }
-    
-    if(action === true) {
+
+    if (action === true) {
         browser.pageAction.show(tabId);
     } else {
         browser.pageAction.hide(tabId);
     }
-    if(options.contextMenu && contextMenuItem) {
-        browser.menus.update(contextMenuItem, {visible: action});
-    }
+    // if (options.contextMenu && contextMenuItem) {
+    //     browser.menus.update(contextMenuItem, { visible: action });
+    // }
 }
 
+let selectedText = "";
+browser.menus.onClicked.addListener((info, tab) => {
+    switch (info.menuItemId) {
+        case "translate-page":
+            if (!isNullOrWhitespace(info.selectionText)) {
+                selectedText = info.selectionText.trim();
+            }
+            doTranslator(tab);
+            console.log(info.selectionText);
+            break;
+    }
+});
+
+function isNullOrWhitespace(input) {
+    return !input;
+}
 
 async function doTranslator(tab) {
     let url = tab.url;
 
-    let fromLang = options.fromLang;
-    if(fromLang == "auto2") {
-      let pageLanguage = await getPageLanguage(tab.id);
-      if (pageLanguage !== "und") {
-        fromLang = pageLanguage;
-      } else {
-        fromLang = (options.translationService === "microsoft") ? "" : "auto";
-      }
-    }
+    if (!url.includes(".translate.goog")) {
+        let fromLang = options.fromLang;
+        if (fromLang == "auto2") {
+            let pageLanguage = await getPageLanguage(tab.id);
+            if (pageLanguage !== "und") {
+                fromLang = pageLanguage;
+            } else {
+                fromLang = "auto";
+            }
+        }
 
-    if (options.translationService === "microsoft") {
-        url = `https://www.translatetheweb.com/?from=${fromLang}&to=${options.toLang}&a=${encodeURIComponent(url)}`;
-    } else {
-        url = `https://translate.google.com/translate?sl=${fromLang}&tl=${options.toLang}&u=${encodeURIComponent(url)}`;
-    }
+        let toLang = options.toLang;
+        if (toLang == "auto") {
+            let languageBrowser = navigator.language;
+            if (languageBrowser.includes("-") == true) {
+                languageBrowser = languageBrowser.split('-', 1)[0];
+            }
+            toLang = languageBrowser
+        }
 
-    browser.tabs.update(tab.id,{url: url});
+        if (isNullOrWhitespace(selectedText)) {
+            let selectedText2 = selectedText;
+
+            if (options.translationService === "microsoft") {
+                url = `https://www.translatetheweb.com/?from=${fromLang}&to=${toLang}&a=${encodeURIComponent(url)}`;
+            } else {
+                url = `https://translate.google.com/translate?sl=${fromLang}&tl=${toLang}&hl=${toLang}&u=${encodeURIComponent(url)}`;
+            }
+            browser.tabs.update(tab.id, { url: url });
+        } else {
+            let selectedText2 = selectedText;
+            url = `https://translate.google.com/?sl=${fromLang}&tl=${toLang}&text=${selectedText}`;
+
+            browser.tabs.create({ 'url': url, 'index': tab.index + 1 });
+        }
+
+        selectedText = "";
+        initializePageAction(tab.id, tab.url);
+    }
 }
 
 browser.tabs.onActivated.addListener((activeInfo) => {
@@ -156,8 +194,8 @@ try {
         if ((typeof changeInfo.status === "string") && (changeInfo.status === "complete")) {
             initializePageAction(tab.id, tab.url);
         }
-    }, {properties: ["status"]});
-} catch(err) {
+    }, { properties: ["status"] });
+} catch (err) {
     browser.tabs.onUpdated.addListener((id, changeInfo, tab) => {
         if ((typeof changeInfo.status === "string") && (changeInfo.status === "complete")) {
             initializePageAction(tab.id, tab.url);
@@ -169,25 +207,24 @@ browser.pageAction.onClicked.addListener(doTranslator);
 
 let changed = true;
 function updateOptions(storedOptions) {
-    for(o in options) {
+    for (o in options) {
         if (typeof storedOptions[o] === typeof options[o]) {
-                changed = changed || options[o] !== storedOptions[o];
-                options[o] = storedOptions[o];
+            changed = changed || options[o] !== storedOptions[o];
+            options[o] = storedOptions[o];
         }
     }
-    
-    if(options.contextMenu && !contextMenuItem) {
+
+    if (options.contextMenu && !contextMenuItem) {
         contextMenuItem = "translate-page";
         browser.menus.create({
-          id: contextMenuItem,
-          title: "Translate Page",
-          command: "_execute_page_action"
+            id: contextMenuItem,
+            title: "Translate"
         });
-    } else if(contextMenuItem && !options.contextMenu) {
-        browser.menus.update(contextMenuItem, {visible: false});
+    } else if (contextMenuItem && !options.contextMenu) {
+        browser.menus.update(contextMenuItem, { visible: false });
     }
-    
-    if(changed) {
+
+    if (changed) {
         browser.tabs.query({}).then((tabs) => {
             for (tab of tabs) {
                 initializePageAction(tab.id, tab.url);
@@ -200,14 +237,14 @@ function updateOptions(storedOptions) {
 browser.storage.local.get().then(updateOptions);
 
 function updateChanged(changes, area) {
-  var changedItems = Object.keys(changes);
-  changed = false;
- 
-  let newOptions = {};
-  for (var item of changedItems) {
-    newOptions[item] = changes[item].newValue;
-  }
-  updateOptions(newOptions);
+    var changedItems = Object.keys(changes);
+    changed = false;
+
+    let newOptions = {};
+    for (var item of changedItems) {
+        newOptions[item] = changes[item].newValue;
+    }
+    updateOptions(newOptions);
 }
 
 browser.storage.onChanged.addListener(updateChanged);

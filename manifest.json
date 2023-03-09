@@ -1,12 +1,12 @@
 {
     "manifest_version": 2,
-    "name": "Page Translator Revised",
-    "version": "2019.5.23",
+    "name": "Page Translator 3",
+    "version": "3.0.0.0",
     "developer": {
-        "name": "Mathnerd314",
-        "url": "https://github.com/Mathnerd314/page-translator"
+        "name": "Hellboy",
+        "url": "https://github.com/Hellboy00000/Page-Translator-3"
     },
-    "description": "Translate any page using Google Translate or Microsoft Translator.",
+    "description": "Translate any page and text using Google Translate or Microsoft Translator.",
     "icons": {
         "16": "icons/icon-16.png",
         "32": "icons/icon-32.png",
@@ -17,7 +17,7 @@
     "permissions": [
         "storage",
         "tabs",
-	    "menus"
+        "menus"
     ],
     "page_action": {
         "browser_style": true,
@@ -25,15 +25,17 @@
         "default_title": "Translate Page"
     },
     "background": {
-        "scripts": ["background.js"]
+        "scripts": [
+            "background.js"
+        ]
     },
     "options_ui": {
         "page": "options/options.html",
-		"browser_style": true
+        "browser_style": true
     },
     "applications": {
         "gecko": {
-            "id": "page-translator-revised@mathnerd314.github.com"
+            "id": "page-translator-3@github.com"
         }
     }
 }
