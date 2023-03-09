@@ -8,7 +8,6 @@ zip "./page-translator.xpi" \
 ./icons/icon-32.png \
 ./icons/icon-48.png \
 ./icons/icon-96.png \
-./icons/icon.svg \
 ./icons/LICENSE.txt \
 ./LICENSE.txt \
 ./manifest.json \
