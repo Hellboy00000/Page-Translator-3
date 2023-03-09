@@ -4,16 +4,17 @@
     <meta charset="utf-8"/>
 	<title>Page_Translator</title>
 	<meta name="viewport" content="width=device-width">
+	<link rel="stylesheet" type="text/css" href="options.css">
 </head>
 <body>
     <form>
         <div>
-            <label style="padding-right: 2px;" for="translation-service">Translate using </label>
+            <label class="translation-service" for="translation-service">Translate using </label>
             <select id="translation-service">
                 <option value="google">Google Translate</option>
                 <option value="microsoft">Microsoft Translator</option>
             </select>
-            <label style="padding: 0px 2px;" for="google_lang_from"> from </label>
+            <label class="google_lang_from" for="google_lang_from"> from </label>
 				<select id="google_lang_from">
 					<option value="auto">*Auto-Detect (Google)*</option>
 					<option value="auto2">*Auto-Detect (Firefox)*</option>
@@ -189,7 +190,7 @@
 					<option value="cy">Welsh</option>
 					<option value="yua">Yucatec Maya</option>
 				</select>
-			<label style="padding: 0px 2px;" for="google_lang_to"> to </label>
+			<label class="google_lang_to" for="google_lang_to"> to </label>
 				<select id="google_lang_to">
 					<option value="auto">*Auto-Detect*</option>
 					<option value="af">Afrikaans</option>
@@ -364,7 +365,7 @@
 					<option value="yua">Yucatec Maya</option>
 				</select>
 		</div>
-        <div style="padding-top: 10px;">
+        <div class="check">
             <label>
                 <input id="automatically-translate" type="checkbox" />
                 Automatically translate pages in foreign language
