@@ -22,10 +22,10 @@ To change the translation service, select the service you'd like to use in the "
 
 ## History and development
 
-Page Translator 1 - Original code from Page Translator © 2017–2018 Jeremiah Lee. - https://github.com/KingLui69/page-translator
+Page Translator 1 - Original Page Translator © 2017–2018 by Jeremiah Lee. - https://github.com/KingLui69/page-translator
 
-Page Translator 2 - Page Translator Revised by Mathnerd314. - https://github.com/Mathnerd314/page-translator
+Page Translator 2 - Page Translator Revised 2019 by Mathnerd314. - https://github.com/Mathnerd314/page-translator
 
-Page Translator 3 by Hellboy - https://github.com/Hellboy00000/Page-Translator-3
+Page Translator 3 - 2023 By Hellboy. - https://github.com/Hellboy00000/Page-Translator-3
 
 Page Translator 3 is released under the ISC License.
