@@ -14,8 +14,8 @@
                 <option value="google">Google Translate</option>
                 <option value="microsoft">Microsoft Translator</option>
             </select>
-            <label class="google_lang_from" for="google_lang_from"> from </label>
-				<select id="google_lang_from">
+            <label class="google_lang_from" for="google_lang_from"> from 
+				<select class="select_from_g" id="google_lang_from">
 					<option value="auto">*Auto-Detect (Google)*</option>
 					<option value="auto2">*Auto-Detect (Firefox)*</option>
 					<option value="af">Afrikaans</option>
@@ -122,7 +122,7 @@
 					<option value="yo">Yoruba</option>
 					<option value="zu">Zulu</option>
 				</select>
-				<select id="microsoft_lang_from">
+				<select class="select_from_m" id="microsoft_lang_from">
 					<option value="auto">*Auto-Detect (Microsoft)*</option>
 					<option value="auto2">*Auto-Detect (Firefox)*</option>
 					<option value="af">Afrikaans</option>
@@ -190,8 +190,9 @@
 					<option value="cy">Welsh</option>
 					<option value="yua">Yucatec Maya</option>
 				</select>
-			<label class="google_lang_to" for="google_lang_to"> to </label>
-				<select id="google_lang_to">
+			</label>
+			<label class="google_lang_to" for="google_lang_to"> to 
+				<select class="select_to_g" id="google_lang_to">
 					<option value="auto">*Auto-Detect*</option>
 					<option value="af">Afrikaans</option>
 					<option value="sq">Albanian</option>
@@ -297,7 +298,7 @@
 					<option value="yo">Yoruba</option>
 					<option value="zu">Zulu</option>
 				</select>
-				<select id="microsoft_lang_to">
+				<select class="select_to_m" id="microsoft_lang_to">
 					<option value="auto">*Auto-Detect*</option>
 					<option value="af">Afrikaans</option>
 					<option value="ar">Arabic</option>
@@ -364,6 +365,7 @@
 					<option value="cy">Welsh</option>
 					<option value="yua">Yucatec Maya</option>
 				</select>
+			</label>
 		</div>
         <div class="check">
             <label>

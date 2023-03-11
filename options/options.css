@@ -3,11 +3,25 @@
 }
 
 .google_lang_from {
-    padding: 0px 2px;
+    padding-left: 2px;
 }
 
-.google_lang_to {
-    padding: 0px 2px;
+.select_from_g {
+    margin: 0px 2px;
+    padding-right: 17px;
+}
+
+.select_from_m {
+    margin: 0px 2px;
+}
+
+.select_to_g {
+    margin-left: 2px;
+    padding-right: 21px;
+}
+
+.select_to_m {
+    margin-left: 2px;
 }
 
 .check {
