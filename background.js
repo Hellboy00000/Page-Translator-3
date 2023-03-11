@@ -66,13 +66,6 @@ function pageIsInForeignLanguage(pageLanguage) {
     return true;
 }
 
-// let translatedURLs = new Set();
-
-function translationPage(url) {
-    let parsed = new URL(url);
-    return parsed.hostname === "ssl.microsofttranslator.com" || parsed.hostname === "translate.google.com";
-}
-
 /*
 Show the Page Translator page action in the browser address bar, if applicable.
 If user always wants the icon, show it.
@@ -96,7 +89,6 @@ async function determinePageAction(tabId, url) {
     let pageLanguage = await getPageLanguage(tabId);
     let pageLanguageKnown = pageLanguage !== "und";
     let pageNeedsTranslating = pageIsInForeignLanguage(pageLanguage);
-    // let isTranslationPage = translationPage(url) || translatedURLs.has(url);
     let isTranslationPage = url.includes(".translate.goog") || url.includes(".microsofttranslator.com");
 
     if (pageLanguageKnown && pageNeedsTranslating && options.automaticallyTranslate && !isTranslationPage) {
@@ -106,11 +98,13 @@ async function determinePageAction(tabId, url) {
     return (pageNeedsTranslating || options.alwaysShowPageAction);
 }
 
+let needsTranslation = false;
+
 async function initializePageAction(tabId, url) {
     let action = await determinePageAction(tabId, url);
+    needsTranslation = action;
 
     if (action === "translate") {
-        // translatedURLs.add(url);
         doTranslator({ id: tabId, url: url });
         action = false;
     }
@@ -120,9 +114,6 @@ async function initializePageAction(tabId, url) {
     } else {
         browser.pageAction.hide(tabId);
     }
-    // if (options.contextMenu && contextMenuItem) {
-    //     browser.menus.update(contextMenuItem, { visible: action });
-    // }
 }
 
 let selectedText = "";
@@ -133,7 +124,6 @@ browser.menus.onClicked.addListener((info, tab) => {
                 selectedText = info.selectionText.trim();
             }
             doTranslator(tab);
-            console.log(info.selectionText);
             break;
     }
 });
@@ -145,7 +135,7 @@ function isNullOrWhitespace(input) {
 async function doTranslator(tab) {
     let url = tab.url;
 
-    if (!url.includes(".translate.goog") || !isNullOrWhitespace(selectedText)) {
+    if (needsTranslation === true || !isNullOrWhitespace(selectedText)) {
         let fromLang = options.fromLang;
         if (fromLang == "auto2") {
             let pageLanguage = await getPageLanguage(tab.id);
