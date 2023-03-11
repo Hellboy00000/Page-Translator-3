@@ -1,0 +1,3 @@
+v3.0.0.4
+Fixed text translation not working in tranlated page.
+Fixed address bar icon not hiding in translated page.

@@ -66,7 +66,7 @@ function pageIsInForeignLanguage(pageLanguage) {
     return true;
 }
 
-let translatedURLs = new Set();
+// let translatedURLs = new Set();
 
 function translationPage(url) {
     let parsed = new URL(url);
@@ -96,7 +96,8 @@ async function determinePageAction(tabId, url) {
     let pageLanguage = await getPageLanguage(tabId);
     let pageLanguageKnown = pageLanguage !== "und";
     let pageNeedsTranslating = pageIsInForeignLanguage(pageLanguage);
-    let isTranslationPage = translationPage(url) || translatedURLs.has(url);
+    // let isTranslationPage = translationPage(url) || translatedURLs.has(url);
+    let isTranslationPage = url.includes(".translate.goog") || url.includes(".microsofttranslator.com");
 
     if (pageLanguageKnown && pageNeedsTranslating && options.automaticallyTranslate && !isTranslationPage) {
         return "translate";
@@ -109,7 +110,7 @@ async function initializePageAction(tabId, url) {
     let action = await determinePageAction(tabId, url);
 
     if (action === "translate") {
-        translatedURLs.add(url);
+        // translatedURLs.add(url);
         doTranslator({ id: tabId, url: url });
         action = false;
     }
@@ -144,7 +145,7 @@ function isNullOrWhitespace(input) {
 async function doTranslator(tab) {
     let url = tab.url;
 
-    if (!url.includes(".translate.goog")) {
+    if (!url.includes(".translate.goog") || !isNullOrWhitespace(selectedText)) {
         let fromLang = options.fromLang;
         if (fromLang == "auto2") {
             let pageLanguage = await getPageLanguage(tab.id);
@@ -165,23 +166,21 @@ async function doTranslator(tab) {
         }
 
         if (isNullOrWhitespace(selectedText)) {
-            let selectedText2 = selectedText;
-
             if (options.translationService === "microsoft") {
                 url = `https://www.translatetheweb.com/?from=${fromLang}&to=${toLang}&a=${encodeURIComponent(url)}`;
             } else {
                 url = `https://translate.google.com/translate?sl=${fromLang}&tl=${toLang}&hl=${toLang}&u=${encodeURIComponent(url)}`;
             }
             browser.tabs.update(tab.id, { url: url });
+            browser.tabs.query({active:true,currentWindow:true}).then(function(tabs){ url = tabs[0].url; });
+            initializePageAction(tab.id, url);
         } else {
-            let selectedText2 = selectedText;
             url = `https://translate.google.com/?sl=${fromLang}&tl=${toLang}&text=${selectedText}`;
 
             browser.tabs.create({ 'url': url, 'index': tab.index + 1 });
         }
 
         selectedText = "";
-        initializePageAction(tab.id, tab.url);
     }
 }
 
