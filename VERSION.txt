@@ -2,5 +2,5 @@ v3.0.0.5
 Fixed use of right-click menu translating pages that don't need translation.
 
 v3.0.0.4
-Fixed text translation not working in tranlated page.
+Fixed text translation not working in translated page.
 Fixed address bar icon not hiding in translated page.
