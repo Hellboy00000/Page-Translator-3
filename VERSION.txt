@@ -1,3 +1,6 @@
+v3.0.0.6
+Added 30 missing languages to Google Translate.
+
 v3.0.0.5
 Fixed use of right-click menu translating pages that don't need translation.
 
