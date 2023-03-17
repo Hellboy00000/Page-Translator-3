@@ -21,6 +21,8 @@ function saveOptions() {
         alwaysShowPageAction: document.querySelector("#always-show-page-action").checked,
         automaticallyTranslate: document.querySelector("#automatically-translate").checked,
         contextMenu: document.querySelector("#context-menu").checked,
+        openPageNewTab: document.querySelector("#open-page-in-new-tab").checked,
+        openTextSameTab: document.querySelector("#open-text-in-same-tab").checked,
         translationService: service,
         fromLang: document.querySelector(service == "microsoft" ? "#microsoft_lang_from" : "#google_lang_from").value,
         toLang: document.querySelector(service == "microsoft" ? "#microsoft_lang_to" : "#google_lang_to").value
@@ -44,6 +46,14 @@ async function restoreOptions() {
         document.querySelector("#context-menu").checked = options.contextMenu;
     }
 
+    if (typeof options.contextMenu === "boolean") {
+        document.querySelector("#open-page-in-new-tab").checked = options.openPageNewTab;
+    }
+
+    if (typeof options.contextMenu === "boolean") {
+        document.querySelector("#open-text-in-same-tab").checked = options.openTextSameTab;
+    }
+
     if (typeof options.translationService === "string") {
         document.querySelector("#translation-service").value = options.translationService;
     }
@@ -58,7 +68,7 @@ async function restoreOptions() {
 }
 
 document.addEventListener("DOMContentLoaded", restoreOptions);
-let arr = ["always-show-page-action","automatically-translate","translation-service","context-menu"
+let arr = ["always-show-page-action","automatically-translate","translation-service","context-menu","open-page-in-new-tab","open-text-in-same-tab"
           ,"microsoft_lang_from","microsoft_lang_to","google_lang_from","google_lang_to"];
 for(let i = 0; i < arr.length;i++)
  document.querySelector("#" + arr[i]).addEventListener("change", saveOptions);

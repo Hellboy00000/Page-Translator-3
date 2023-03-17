@@ -10,10 +10,10 @@
     <form>
         <div>
             <label class="translation-service" for="translation-service">Translate using </label>
-            <select id="translation-service">
-                <option value="google">Google Translate</option>
-                <option value="microsoft">Microsoft Translator</option>
-            </select>
+				<select id="translation-service">
+					<option value="google">Google Translate</option>
+					<option value="microsoft">Microsoft Translator</option>
+				</select>
             <label class="google_lang_from" for="google_lang_from"> from 
 				<select class="select_from_g" id="google_lang_from">
 					<option value="auto">*Auto-Detect (Google)*</option>
@@ -443,6 +443,18 @@
             <label>
                 <input id="context-menu" type="checkbox" checked />
                 Show translation action in context menu
+            </label>
+        </div>
+		<div>
+            <label>
+                <input id="open-page-in-new-tab" type="checkbox" />
+                Open translated pages in a new tab
+            </label>
+        </div>
+        <div>
+            <label>
+                <input id="open-text-in-same-tab" type="checkbox" />
+                Open translated text in the same tab
             </label>
         </div>
     </form>

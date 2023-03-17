@@ -1,3 +1,7 @@
+v3.0.0.7
+Added "Open translated pages in a new tab" to options.
+Added "Open translated text in the same tab" to options.
+
 v3.0.0.6
 Added 30 missing languages to Google Translate.
 
