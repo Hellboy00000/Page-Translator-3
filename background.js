@@ -161,21 +161,24 @@ async function doTranslator(tab) {
             } else {
                 url = `https://translate.google.com/translate?sl=${fromLang}&tl=${toLang}&hl=${toLang}&u=${encodeURIComponent(url)}`;
             }
-            
+
             if (options.openPageNewTab === true) {
                 browser.tabs.create({ 'url': url, 'index': tab.index + 1 });
             }
             else {
                 browser.tabs.update(tab.id, { url: url });
-            }
 
-            browser.tabs.query({active:true,currentWindow:true}).then(function(tabs){ url = tabs[0].url; });
-            initializePageAction(tab.id, url);
+                browser.tabs.query({ active: true, currentWindow: true }).then(function (tabs) { url = tabs[0].url; });
+                initializePageAction(tab.id, url);
+            }
         } else {
             url = `https://translate.google.com/?sl=${fromLang}&tl=${toLang}&text=${selectedText}`;
 
             if (options.openTextSameTab === true) {
                 browser.tabs.update(tab.id, { url: url });
+
+                browser.tabs.query({ active: true, currentWindow: true }).then(function (tabs) { url = tabs[0].url; });
+                initializePageAction(tab.id, url);
             }
             else {
                 browser.tabs.create({ 'url': url, 'index': tab.index + 1 });
