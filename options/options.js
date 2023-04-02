@@ -8,11 +8,11 @@ function showHide(elem, show) {
 
 function updateLayout() {
     let service = document.querySelector("#translation-service").value;
-    let b = (service === "microsoft");
-    showHide( document.querySelector("#google_lang_from"), !b);
-    showHide( document.querySelector("#google_lang_to"), !b);
-    showHide( document.querySelector("#microsoft_lang_from"), b);
-    showHide( document.querySelector("#microsoft_lang_to"), b);
+    let b = (service === "google");
+    showHide( document.querySelector("#google_lang_from"), b);
+    showHide( document.querySelector("#google_lang_to"), b);
+    showHide( document.querySelector("#yandex_lang_from"), !b);
+    showHide( document.querySelector("#yandex_lang_to"), !b);
 }
 
 function saveOptions() {
@@ -24,8 +24,8 @@ function saveOptions() {
         openPageNewTab: document.querySelector("#open-page-in-new-tab").checked,
         openTextSameTab: document.querySelector("#open-text-in-same-tab").checked,
         translationService: service,
-        fromLang: document.querySelector(service == "microsoft" ? "#microsoft_lang_from" : "#google_lang_from").value,
-        toLang: document.querySelector(service == "microsoft" ? "#microsoft_lang_to" : "#google_lang_to").value
+        fromLang: document.querySelector(service == "google" ? "#google_lang_from" : "#yandex_lang_from").value,
+        toLang: document.querySelector(service == "google" ? "#google_lang_to" : "#yandex_lang_to").value
     });
     updateLayout();
 }
@@ -60,16 +60,16 @@ async function restoreOptions() {
     
     let service = document.querySelector("#translation-service").value;
     if (typeof options.fromLang === "string") {
-        document.querySelector(service == "microsoft" ? "#microsoft_lang_from" : "#google_lang_from").value = options.fromLang;
+        document.querySelector(service == "google" ? "#google_lang_from" : "#yandex_lang_from").value = options.fromLang;
     }
     if (typeof options.toLang === "string") {
-        document.querySelector(service == "microsoft" ? "#microsoft_lang_to" : "#google_lang_to").value = options.toLang;
+        document.querySelector(service == "google" ? "#google_lang_to" : "#yandex_lang_to").value = options.toLang;
     }
 }
 
 document.addEventListener("DOMContentLoaded", restoreOptions);
 let arr = ["always-show-page-action","automatically-translate","translation-service","context-menu","open-page-in-new-tab","open-text-in-same-tab"
-          ,"microsoft_lang_from","microsoft_lang_to","google_lang_from","google_lang_to"];
+          ,"google_lang_from","google_lang_to","yandex_lang_from","yandex_lang_to"];
 for(let i = 0; i < arr.length;i++)
  document.querySelector("#" + arr[i]).addEventListener("change", saveOptions);
 updateLayout();

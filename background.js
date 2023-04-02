@@ -89,7 +89,7 @@ async function determinePageAction(tabId, url) {
     let pageLanguage = await getPageLanguage(tabId);
     let pageLanguageKnown = pageLanguage !== "und";
     let pageNeedsTranslating = pageIsInForeignLanguage(pageLanguage);
-    let isTranslationPage = url.includes(".translate.goog") || url.includes(".microsofttranslator.com");
+    let isTranslationPage = url.includes(".translate.goog") || url.includes("translated.turbopages.org");
 
     if (pageLanguageKnown && pageNeedsTranslating && options.automaticallyTranslate && !isTranslationPage) {
         return "translate";
@@ -149,17 +149,24 @@ async function doTranslator(tab) {
         let toLang = options.toLang;
         if (toLang == "auto") {
             let languageBrowser = navigator.language;
-            if (languageBrowser.includes("-") == true) {
-                languageBrowser = languageBrowser.split('-', 1)[0];
+            // Next if - Necessary because yandex have languages with "-"
+            if (options.translationService === "google" || options.translationService === "yandex" && toLang !== "pt-BR" && toLang !== "sr-Latn") {
+                if (languageBrowser.includes("-") == true) {
+                    languageBrowser = languageBrowser.split('-', 1)[0];
+                }
             }
             toLang = languageBrowser
         }
 
         if (isNullOrWhitespace(selectedText)) {
-            if (options.translationService === "microsoft") {
-                url = `https://www.translatetheweb.com/?from=${fromLang}&to=${toLang}&a=${encodeURIComponent(url)}`;
-            } else {
+            if (options.translationService === "google") {
                 url = `https://translate.google.com/translate?sl=${fromLang}&tl=${toLang}&hl=${toLang}&u=${encodeURIComponent(url)}`;
+            } else {
+                if (fromLang == "auto") {
+                    url = `https://translate.yandex.com/translate?lang=${toLang}&url=${url}`;   // Necessary because yandex auto doesn't work correctly
+                } else {
+                    url = `https://translate.yandex.com/translate?lang=${fromLang}-${toLang}&url=${url}`;
+                }
             }
 
             if (options.openPageNewTab === true) {
@@ -168,11 +175,25 @@ async function doTranslator(tab) {
             else {
                 browser.tabs.update(tab.id, { url: url });
 
+                // Get current tab. 'tabs' will be an array with only one element: an Object describing the active tab in the current window.
                 browser.tabs.query({ active: true, currentWindow: true }).then(function (tabs) { url = tabs[0].url; });
                 initializePageAction(tab.id, url);
             }
         } else {
-            url = `https://translate.google.com/?sl=${fromLang}&tl=${toLang}&text=${selectedText}`;
+            if (options.translationService === "google") {
+                url = `https://translate.google.com/?sl=${fromLang}&tl=${toLang}&text=${selectedText}`;
+            } else {
+                if (fromLang == "auto") {   // Necessary because yandex auto doesn't work correctly
+                    if (toLang == "en") {
+                        fromLang = "zu";
+                    } else {
+                        fromLang = "en";
+                    }
+                    // navigator.clipboard.writeText(selectedText);
+                    // selectedText = "";
+                }
+                url = `https://translate.yandex.com/?source_lang=${fromLang}&target_lang=${toLang}&text=${selectedText}`;
+            }
 
             if (options.openTextSameTab === true) {
                 browser.tabs.update(tab.id, { url: url });
