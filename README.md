@@ -4,7 +4,11 @@ Page and text translation for Firefox, without remote code execution
 
 Translates any page and text using [Google Translate](https://translate.google.com/manager/website/) or [Yandex Translate](https://cloud.yandex.com/en/services/translate).
 
-The translate icon will only appear if the page is in a foreign language. Page Translator determines if the page is in a foreign language by comparing the list of languages you have specified in Firefox as your preferred languages (<a href="about:preferences#content">Preferences</a> > Content > Languages) against the page language as determined by <a href="https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/tabs/detectLanguage">Firefox</a>. Firefox for Android does not yet support language detection, so the translate icon will always be visible.
+The translate icon will only appear if the page is in a foreign language. Page Translator determines if the page is in a foreign language by comparing the list of languages you have specified in Firefox as your preferred languages (<a href="about:preferences#content">Preferences</a> > Content > Languages) against the page language as determined by <a href="https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/tabs/detectLanguage">Firefox</a>.
+
+Notes:
+-Firefox for Android does not yet support language detection, so the translate icon will always be visible.
+-Yandex auto doesn't work correctly. For text translate, when page open, is needed to press "space" or "enter" to detect the auto.
 
 ## Install
 
