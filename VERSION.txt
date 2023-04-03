@@ -1,6 +1,6 @@
 v3.0.1.0
 Changed Microsoft Translator for Yandex Translate
-Note: Yandex auto doesn't work correctly. For text translate, when page open,
+Note: Yandex "Auto-Detect" doesn't work correctly. For text translate, when page open,
       is needed to press "space" or "enter" to detect the auto.
 
 v3.0.0.7

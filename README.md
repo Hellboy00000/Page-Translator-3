@@ -10,7 +10,7 @@ Notes:
 
 Firefox for Android does not yet support language detection, so the translate icon will always be visible.
 
-Yandex auto doesn't work correctly. For text translate, when page open, is needed to press "space" or "enter" to detect the auto.
+Yandex "Auto-Detect" doesn't work correctly. For text translate, when page open, is needed to press "space" or "enter" to detect the auto.
 
 ## Install
 
