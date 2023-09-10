@@ -1,3 +1,6 @@
+v3.0.1.1
+Fixed special characters "&, %"  not working in text translation.
+
 v3.0.1.0
 Changed Microsoft Translator for Yandex Translate
 Note: Yandex "Auto-Detect" doesn't work correctly. For text translate, when page open,

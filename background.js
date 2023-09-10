@@ -163,9 +163,9 @@ async function doTranslator(tab) {
                 url = `https://translate.google.com/translate?sl=${fromLang}&tl=${toLang}&hl=${toLang}&u=${encodeURIComponent(url)}`;
             } else {
                 if (fromLang == "auto") {
-                    url = `https://translate.yandex.com/translate?lang=${toLang}&url=${url}`;   // Necessary because yandex auto doesn't work correctly
+                    url = `https://translate.yandex.com/translate?lang=${toLang}&url=${encodeURIComponent(url)}`;   // Necessary because yandex auto doesn't work correctly
                 } else {
-                    url = `https://translate.yandex.com/translate?lang=${fromLang}-${toLang}&url=${url}`;
+                    url = `https://translate.yandex.com/translate?lang=${fromLang}-${toLang}&url=${encodeURIComponent(url)}`;
                 }
             }
 
@@ -181,7 +181,7 @@ async function doTranslator(tab) {
             }
         } else {
             if (options.translationService === "google") {
-                url = `https://translate.google.com/?sl=${fromLang}&tl=${toLang}&text=${selectedText}`;
+                url = `https://translate.google.com/?sl=${fromLang}&tl=${toLang}&text=${encodeURIComponent(selectedText)}`;
             } else {
                 if (fromLang == "auto") {   // Necessary because yandex auto doesn't work correctly
                     if (toLang == "en") {
@@ -192,7 +192,7 @@ async function doTranslator(tab) {
                     // navigator.clipboard.writeText(selectedText);
                     // selectedText = "";
                 }
-                url = `https://translate.yandex.com/?source_lang=${fromLang}&target_lang=${toLang}&text=${selectedText}`;
+                url = `https://translate.yandex.com/?source_lang=${fromLang}&target_lang=${toLang}&text=${encodeURIComponent(selectedText)}`;
             }
 
             if (options.openTextSameTab === true) {
