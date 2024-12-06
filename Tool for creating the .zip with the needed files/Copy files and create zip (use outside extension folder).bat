@@ -20,6 +20,6 @@ copy ".\Page-Translator-3\options\options.css" ".\Page Translator 3 Zip\options\
 copy ".\Page-Translator-3\options\options.html" ".\Page Translator 3 Zip\options\options.html"
 copy ".\Page-Translator-3\options\options.js" ".\Page Translator 3 Zip\options\options.js"
 
-7za-x64.exe a ".\Page Translator 3.zip" ".\Page Translator 3 Zip\*" -mx=9 -mmt=on"
+7za-x64.exe a ".\Page Translator 3.zip" ".\Page Translator 3 Zip\*" -mx=9 -mmt=on
 
 RD /S /Q ".\Page Translator 3 Zip"
