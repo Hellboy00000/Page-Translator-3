@@ -43,7 +43,6 @@ Add tests for language matching logic
 - page's language: missing, sv, sv-SV, en-SV, SV-SV, EN-SV
 - browser: en, en-US, sp, sp-US
 
-
 # ADO submission
 
 Summary:
