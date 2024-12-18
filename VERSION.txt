@@ -1,3 +1,7 @@
+v3.0.1.5
+Small corrections.
+Bug fixes.
+
 v3.0.1.1
 Fixed special characters "&, %"  not working in text translation.
 

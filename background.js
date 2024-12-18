@@ -4,7 +4,7 @@ function protocolIsApplicable(tabUrl) {
     return APPLICABLE_PROTOCOLS.includes(url.protocol);
 }
 
-let options = { alwaysShowPageAction: false, automaticallyTranslate: false, translationService: "google", fromLang: "auto", toLang: "auto", contextMenu: true, openPageNewTab: false, openTextSameTab: false };
+let options = { automaticallyTranslate: false, alwaysShowPageAction: false, translationService: "google", fromLang: "auto", toLang: "auto", contextMenu: true, openPageNewTab: false, openTextSameTab: false };
 
 let contextMenuItem = false;
 
@@ -18,7 +18,6 @@ async function getPageLanguage(tabId) {
     }
     return await browser.tabs.detectLanguage(tabId);
 }
-
 
 // string -> boolean
 function pageIsInForeignLanguage(pageLanguage) {
@@ -89,7 +88,7 @@ async function determinePageAction(tabId, url) {
     let pageLanguage = await getPageLanguage(tabId);
     let pageLanguageKnown = pageLanguage !== "und";
     let pageNeedsTranslating = pageIsInForeignLanguage(pageLanguage);
-    let isTranslationPage = url.includes(".translate.goog") || url.includes("translated.turbopages.org");
+    let isTranslationPage = url.includes("translate.goog") || url.includes("translated.turbopages.org");
 
     if (pageLanguageKnown && pageNeedsTranslating && options.automaticallyTranslate && !isTranslationPage) {
         return "translate";
@@ -181,7 +180,7 @@ async function doTranslator(tab) {
             }
         } else {
             if (options.translationService === "google") {
-                url = `https://translate.google.com/?sl=${fromLang}&tl=${toLang}&text=${encodeURIComponent(selectedText)}`;
+                url = `https://translate.google.com/?sl=${fromLang}&tl=${toLang}&text=${encodeURIComponent(selectedText)}&op=translate`;
             } else {
                 if (fromLang == "auto") {   // Necessary because yandex auto doesn't work correctly
                     if (toLang == "en") {
@@ -243,7 +242,7 @@ function updateOptions(storedOptions) {
         contextMenuItem = "translate-page";
         browser.menus.create({
             id: contextMenuItem,
-            title: "Translate"
+            title: "Translate Page or Text"
         });
     } else if (contextMenuItem && !options.contextMenu) {
         browser.menus.update(contextMenuItem, { visible: false });
