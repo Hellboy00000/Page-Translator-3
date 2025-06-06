@@ -1,9 +1,3 @@
-function protocolIsApplicable(tabUrl) {
-    const APPLICABLE_PROTOCOLS = ['http:', 'https:'];
-    let url = new URL(tabUrl);
-    return APPLICABLE_PROTOCOLS.includes(url.protocol);
-}
-
 let options = { automaticallyTranslate: false, alwaysShowPageAction: false, translationService: "google", fromLang: "auto", toLang: "auto", contextMenu: true, openPageNewTab: false, openTextSameTab: false };
 
 let contextMenuItem = false;
@@ -20,7 +14,7 @@ async function getPageLanguage(tabId) {
 }
 
 // string -> boolean
-function pageIsInForeignLanguage(pageLanguage) {
+function pageIsInForeignLanguage() {
     // Normalize page language and browser languages
     pageLanguage = pageLanguage.toLowerCase();
 
@@ -65,33 +59,39 @@ function pageIsInForeignLanguage(pageLanguage) {
     return true;
 }
 
+var currentTab;
+let currentUrl = "";
+var pageLanguage;
+
 /*
 Show the Page Translator page action in the browser address bar, if applicable.
 If user always wants the icon, show it.
 If page is in foreign language, show it.
     If user wants auto translation, invoke it.
 */
-async function determinePageAction(tabId, url) {
+async function determinePageAction(tabId) {
     if (options.alwaysShowPageAction && !options.automaticallyTranslate) {
         return true;
     }
 
-    if (!url) {
-        let tab = await browser.tabs.get(tabId);
-        url = tab.url;
-    }
+    currentTab = await browser.tabs.get(tabId);
+    currentUrl = currentTab.url;
 
-    if (!url || !protocolIsApplicable(url)) {
+    if (isNullOrWhitespace(currentUrl) || !currentUrl.includes("http")) {
         return false;
     }
 
-    let pageLanguage = await getPageLanguage(tabId);
+    pageLanguage = await getPageLanguage(tabId);
     let pageLanguageKnown = pageLanguage !== "und";
-    let pageNeedsTranslating = pageIsInForeignLanguage(pageLanguage);
-    let isTranslationPage = url.includes("translate.goog") || url.includes("translated.turbopages.org");
+    let pageNeedsTranslating = pageIsInForeignLanguage();
+    let isTranslationPage = currentUrl.includes("translate.goog") || currentUrl.includes("translated.turbopages.org");
 
-    if (pageLanguageKnown && pageNeedsTranslating && options.automaticallyTranslate && !isTranslationPage) {
+    if (pageLanguageKnown && pageNeedsTranslating && options.automaticallyTranslate && !options.openPageNewTab && !isTranslationPage) {
         return "translate";
+    }
+
+    if (isTranslationPage === true) {
+        return false;
     }
 
     return (pageNeedsTranslating || options.alwaysShowPageAction);
@@ -99,13 +99,17 @@ async function determinePageAction(tabId, url) {
 
 let needsTranslation = false;
 
-async function initializePageAction(tabId, url) {
-    let action = await determinePageAction(tabId, url);
-    needsTranslation = action;
+async function initializePageAction(tabId) {
+    let action = await determinePageAction(tabId);
+
+    if (action === true || action === "translate") {
+        needsTranslation = true;
+    } else {
+        needsTranslation = false;
+    }
 
     if (action === "translate") {
-        doTranslator({ id: tabId, url: url });
-        action = false;
+        doTranslator();
     }
 
     if (action === true) {
@@ -116,13 +120,13 @@ async function initializePageAction(tabId, url) {
 }
 
 let selectedText = "";
-browser.menus.onClicked.addListener((info, tab) => {
+browser.menus.onClicked.addListener((info) => {
     switch (info.menuItemId) {
         case "translate-page":
             if (!isNullOrWhitespace(info.selectionText)) {
                 selectedText = info.selectionText.trim();
             }
-            doTranslator(tab);
+            doTranslator();
             break;
     }
 });
@@ -131,13 +135,12 @@ function isNullOrWhitespace(input) {
     return !input;
 }
 
-async function doTranslator(tab) {
-    let url = tab.url;
+async function doTranslator() {
+    let url = currentUrl;
 
     if (needsTranslation === true || !isNullOrWhitespace(selectedText)) {
         let fromLang = options.fromLang;
         if (fromLang == "auto2") {
-            let pageLanguage = await getPageLanguage(tab.id);
             if (pageLanguage !== "und") {
                 fromLang = pageLanguage;
             } else {
@@ -169,14 +172,10 @@ async function doTranslator(tab) {
             }
 
             if (options.openPageNewTab === true) {
-                browser.tabs.create({ 'url': url, 'index': tab.index + 1 });
+                browser.tabs.create({ 'url': url, 'index': currentTab.index + 1 });
             }
             else {
-                browser.tabs.update(tab.id, { url: url });
-
-                // Get current tab. 'tabs' will be an array with only one element: an Object describing the active tab in the current window.
-                browser.tabs.query({ active: true, currentWindow: true }).then(function (tabs) { url = tabs[0].url; });
-                initializePageAction(tab.id, url);
+                browser.tabs.update(currentTab.id, { url: url });
             }
         } else {
             if (options.translationService === "google") {
@@ -195,13 +194,10 @@ async function doTranslator(tab) {
             }
 
             if (options.openTextSameTab === true) {
-                browser.tabs.update(tab.id, { url: url });
-
-                browser.tabs.query({ active: true, currentWindow: true }).then(function (tabs) { url = tabs[0].url; });
-                initializePageAction(tab.id, url);
+                browser.tabs.update(currentTab.id, { url: url });
             }
             else {
-                browser.tabs.create({ 'url': url, 'index': tab.index + 1 });
+                browser.tabs.create({ 'url': url, 'index': currentTab.index + 1 });
             }
         }
 
@@ -268,6 +264,12 @@ function updateChanged(changes, area) {
     for (var item of changedItems) {
         newOptions[item] = changes[item].newValue;
     }
+
+    // To avoid a bug: The "Open translated pages in a new tab" option does not work if you are using the "Automatically translate pages in foreign language" option.
+    if (newOptions["automaticallyTranslate"] === true && newOptions["openPageNewTab"] === true || options.openPageNewTab) {
+        newOptions["openPageNewTab"] = false;
+    }
+
     updateOptions(newOptions);
 }
 

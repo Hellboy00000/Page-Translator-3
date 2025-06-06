@@ -1,3 +1,10 @@
+v3.0.2.0
+Code improvement.
+Added new languages to Google Translate and Yandex Translate.
+Fixed the "Automatically translate pages in foreign language" option.
+Note: The "Open translated pages in a new tab" option does not work if you are using
+      the "Automatically translate pages in foreign language" option.
+
 v3.0.1.5
 Small corrections.
 Bug fixes.
