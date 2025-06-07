@@ -7,17 +7,15 @@
 }
 
 .select_from_g {
-    margin: 0px 2px;
-    padding-right: 5px;
+    margin: 8px 2px 10px 2px;
 }
 
 .select_from_y {
-    margin: 0px 2px;
+    margin: 8px 2px 0px 2px;
 }
 
 .select_to_g {
     margin-left: 2px;
-    padding-right: 11px;
 }
 
 .select_to_y {
