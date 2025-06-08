@@ -1,5 +1,8 @@
+v3.0.2.2
+Improved code to find the browser language.
+
 v3.0.2.1
-Improve option margins
+Improved option margins.
 
 v3.0.2.0
 Code improvement.

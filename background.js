@@ -15,31 +15,27 @@ async function getPageLanguage(tabId) {
 
 // string -> boolean
 function pageIsInForeignLanguage() {
-    // Normalize page language and browser languages
-    pageLanguage = pageLanguage.toLowerCase();
+    // Normalize page language and browser language
+    let pageLanguageLower = pageLanguage.toLowerCase();
 
     // If language is unknown, better to show the UI
-    if (pageLanguage === "und") {
+    if (pageLanguageLower === "und") {
         return true;
     }
 
-    let navigatorLanguages = navigator.languages.map(navigatorLanguage => {
-        return navigatorLanguage.toLowerCase();
-    });
+    let languageBrowser = browser.i18n.getUILanguage().toLowerCase();
 
-    // Check if the page's language explicitly matches any of browser's preferred languages
-    if (navigatorLanguages.includes(pageLanguage)) {
+    // Check if the page language explicitly matches the browser preferred language
+    if (languageBrowser.includes(pageLanguageLower)) {
         return false;
     }
 
-    // If you're still here, then check for match of primary language subtags
+    // If you're still here, then check for match of primary language subtag
     // If so, assume close enough to native language.
 
-    // Get array of the primary languages from the browser, i.e. those without a hyphen
+    // Get browser language subtag, i.e. those without a hyphen
     // Ex: `en` but not `en-SV`
-    let primaryLanguageSubtags = navigatorLanguages.filter(language => {
-        return language.indexOf('-') === -1;
-    });
+    let primaryLanguageSubtags = languageBrowser.split('-', 1)[0];
 
     // If no primary language subtag specified in browser, the user has explicitly removed it,
     // so assume they want explicit language match instead of partial match.
@@ -48,7 +44,7 @@ function pageIsInForeignLanguage() {
     }
 
     // Get page's language subtag
-    let pageLanguageSubtag = pageLanguage.split('-', 1)[0];
+    let pageLanguageSubtag = pageLanguageLower.split('-', 1)[0];
 
     // Look for primary language subtag match
     if (primaryLanguageSubtags.includes(pageLanguageSubtag)) {
@@ -140,7 +136,7 @@ async function doTranslator() {
 
     if (needsTranslation === true || !isNullOrWhitespace(selectedText)) {
         let fromLang = options.fromLang;
-        if (fromLang == "auto2") {
+        if (fromLang === "auto2") {
             if (pageLanguage !== "und") {
                 fromLang = pageLanguage;
             } else {
@@ -149,11 +145,11 @@ async function doTranslator() {
         }
 
         let toLang = options.toLang;
-        if (toLang == "auto") {
-            let languageBrowser = navigator.language;
+        if (toLang === "auto") {
+            let languageBrowser = browser.i18n.getUILanguage();
             // Next if - Necessary because yandex have languages with "-"
             if (options.translationService === "google" || options.translationService === "yandex" && toLang !== "pt-BR" && toLang !== "sr-Latn") {
-                if (languageBrowser.includes("-") == true) {
+                if (languageBrowser.includes("-") === true) {
                     languageBrowser = languageBrowser.split('-', 1)[0];
                 }
             }
