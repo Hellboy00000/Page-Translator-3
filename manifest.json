@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "Page Translator 3",
-    "version": "3.0.2.3",
+    "version": "3.0.2.4",
     "developer": {
         "name": "Hellboy",
         "url": "https://github.com/Hellboy00000/Page-Translator-3"
@@ -20,7 +20,6 @@
         "menus"
     ],
     "page_action": {
-        "browser_style": true,
         "default_icon": "icons/icon.svg",
         "default_title": "Translate Page"
     },
@@ -30,8 +29,7 @@
         ]
     },
     "options_ui": {
-        "page": "options/options.html",
-        "browser_style": true
+        "page": "options/options.html"
     },
     "browser_specific_settings": {
         "gecko": {
