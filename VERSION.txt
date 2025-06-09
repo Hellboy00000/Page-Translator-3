@@ -1,3 +1,6 @@
+v3.0.2.3
+Small fix
+
 v3.0.2.2
 Improved code to find the browser language.
 

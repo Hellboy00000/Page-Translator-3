@@ -147,8 +147,10 @@ async function doTranslator() {
         let toLang = options.toLang;
         if (toLang === "auto") {
             let languageBrowser = browser.i18n.getUILanguage();
-            // Next if - Necessary because yandex have languages with "-"
-            if (options.translationService === "google" || options.translationService === "yandex" && toLang !== "pt-BR" && toLang !== "sr-Latn") {
+            //Next if - Necessary because google and yandex have languages with "-"
+            if ((options.translationService === "google" && toLang !== "zh-CN" && toLang !== "zh-TW" && toLang !== "crh-Latn" && toLang !== "fa-AF" && toLang !== "fr-CA" && toLang !== "iu-Latn" 
+                && toLang !== "ms-Arab" && toLang !== "mni-Mtei" && toLang !== "ndc-ZW" && toLang !== "bm-Nkoo" && toLang !== "pt-PT" && toLang !== "pa-Arab" && toLang !== "sat-Latn" 
+                && toLang !== "ber-Latn") || (options.translationService === "yandex" && toLang !== "pt-BR" && toLang !== "sr-Latn")) {
                 if (languageBrowser.includes("-") === true) {
                     languageBrowser = languageBrowser.split('-', 1)[0];
                 }
