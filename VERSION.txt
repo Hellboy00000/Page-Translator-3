@@ -1,3 +1,6 @@
+v3.0.2.5
+Small fix
+
 v3.0.2.4
 Small manifest fix
 
