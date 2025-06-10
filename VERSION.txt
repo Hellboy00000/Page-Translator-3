@@ -1,11 +1,15 @@
+v3.0.2.6
+Small manifest fix.
+Appearance of the options has been improved.
+
 v3.0.2.5
-Small fix
+Small fix.
 
 v3.0.2.4
-Small manifest fix
+Small manifest fix.
 
 v3.0.2.3
-Small fix
+Small fix.
 
 v3.0.2.2
 Improved code to find the browser language.
@@ -28,7 +32,7 @@ v3.0.1.1
 Fixed special characters "&, %"  not working in text translation.
 
 v3.0.1.0
-Changed Microsoft Translator for Yandex Translate
+Changed Microsoft Translator for Yandex Translate.
 Note: Yandex "Auto-Detect" doesn't work correctly. For text translate, when page open,
       is needed to press "space" or "enter" to detect the auto.
 

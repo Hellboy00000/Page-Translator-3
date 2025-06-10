@@ -2,24 +2,24 @@
     padding-right: 2px;
 }
 
-.google_lang_from {
-    padding-left: 2px;
-}
-
 .select_from_g {
-    margin: 0px 2px 12px 2px;
+    margin: 11px 0px 11px 2px;
+    padding-right: 5px;
 }
 
 .select_from_y {
-    margin: 0px 2px 12px 2px;
+    margin: 11px 0px 11px 2px;
+    padding-right: 25px;
 }
 
 .select_to_g {
     margin-left: 2px;
+    padding-right: 23px;
 }
 
 .select_to_y {
     margin-left: 2px;
+    padding-right: 55px;
 }
 
 .check {
